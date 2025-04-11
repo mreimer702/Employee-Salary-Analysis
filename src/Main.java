@@ -1,4 +1,7 @@
 import java.util.ArrayList;
+import java.util.List;
+import java.util.OptionalDouble;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,17 +19,40 @@ public class Main {
         employees.add(newemployee4);
         employees.add(newemployee5);
 
-        ArrayList<String> employeeInfo = new ArrayList<>();
+        System.out.println("List of Employees");
         for (Employee employee : employees) {
-            String info = "Name: " + employee.getName() +
-                    ", Age: " + employee.getAge() +
-                    ", Salary: $" + employee.getSalary() +"0";
-            employeeInfo.add(info);
+            System.out.println(employee);
         }
+        System.out.println("\n");
+        List<Employee> result = employees.stream()
+                .filter(employee -> employee.getSalary() > 50000.00)
+                .collect(Collectors.toList());
+        System.out.println("List of Employees making over $50,000");
+        for (Employee employee : result) {
+            System.out.println(employee);
+        }
+        System.out.println("\n");
 
-        System.out.println("Employee Info:");
-        for (String info : employeeInfo) {
-            System.out.println(info);
+        OptionalDouble result1 = employees.stream()
+                .filter(employee -> employee.getAge() > 30)
+                .mapToDouble(employee -> employee.getSalary())
+                .average();
+
+        System.out.println("Average Salary of Employees Over 30");
+        System.out.println(result1);
+        System.out.println("\n");
+
+        List<Double> result2 = employees.stream()
+                .map(employee -> employee.getSalary() * 1.1)
+                .collect(Collectors.toList());
+        int count = 0;
+        for (Employee employee : employees) {
+            employee.setSalary(result2.get(count));
+            count ++;
+        }
+        System.out.println("List of Employees with a universal 10% raise in salary");
+        for (Employee employee : employees) {
+            System.out.println(employee);
         }
     }
 }
